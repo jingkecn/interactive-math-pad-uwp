@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:iink="using:MyScript.IInk"
     mc:Ignorable="d"
     d:DesignHeight="48"
     d:DesignWidth="320"
@@ -16,6 +17,14 @@
                            ExecuteRequested="ClearAllCommand_OnExecuteRequested">
             <StandardUICommand.IconSource>
                 <SymbolIconSource Symbol="Delete" />
+            </StandardUICommand.IconSource>
+        </StandardUICommand>
+        <StandardUICommand x:Name="CopyCommand"
+                           x:Uid="CopyCommand"
+                           Kind="Copy"
+                           ExecuteRequested="CopyCommand_OnExecuteRequested">
+            <StandardUICommand.IconSource>
+                <SymbolIconSource Symbol="Copy" />
             </StandardUICommand.IconSource>
         </StandardUICommand>
         <StandardUICommand x:Name="RedoCommand"
@@ -50,6 +59,18 @@
                   IsEnabled="{x:Bind ViewModel.CanRedo, Mode=OneWay}" />
     <AppBarButton x:Uid="TypesetButton"
                   Command="{x:Bind TypesetCommand}" />
+    <AppBarButton x:Uid="CopyAsLatexButton"
+                  Command="{x:Bind CopyCommand}">
+        <AppBarButton.CommandParameter>
+            <iink:MimeType>LATEX</iink:MimeType>
+        </AppBarButton.CommandParameter>
+    </AppBarButton>
+    <AppBarButton x:Uid="CopyAsMathMlButton"
+                  Command="{x:Bind CopyCommand}">
+        <AppBarButton.CommandParameter>
+            <iink:MimeType>MATHML</iink:MimeType>
+        </AppBarButton.CommandParameter>
+    </AppBarButton>
     <CommandBar.SecondaryCommands>
         <AppBarButton x:Uid="ClearAllButton"
                       Command="{StaticResource ClearAllCommand}" />

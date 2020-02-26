@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Devices.Input;
 using Windows.Foundation;
 using Windows.UI.Input;
@@ -11,6 +12,14 @@ namespace MyScript.InteractiveInk.UI.Extensions
 {
     public static partial class EditorExtensions
     {
+        public static void CopyToClipboard(this Editor source, ContentBlock block = null, MimeType type = MimeType.TEXT)
+        {
+            var data = new DataPackage {RequestedOperation = DataPackageOperation.Copy};
+            var content = source.Export_(block, type);
+            data.SetText(content);
+            Clipboard.SetContent(data);
+        }
+
         public static void Typeset(this Editor source, [CanBeNull] ContentBlock block = null)
         {
             var states = source.GetSupportedTargetConversionStates(block);

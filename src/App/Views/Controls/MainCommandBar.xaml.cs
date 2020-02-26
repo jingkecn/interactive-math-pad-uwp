@@ -1,3 +1,4 @@
+using System;
 using Windows.UI.Xaml.Input;
 using MyScript.IInk;
 using MyScript.InteractiveInk.UI.Extensions;
@@ -25,6 +26,21 @@ namespace MyScript.InteractiveInk.Views.Controls
             }
 
             Editor.Clear();
+        }
+
+        private void CopyCommand_OnExecuteRequested(XamlUICommand sender, ExecuteRequestedEventArgs args)
+        {
+            if (!Enum.IsDefined(typeof(MimeType), args.Parameter))
+            {
+                return;
+            }
+
+            if (!Editor.IsIdle())
+            {
+                Editor.WaitForIdle();
+            }
+
+            Editor.CopyToClipboard(type: (MimeType)Enum.ToObject(typeof(MimeType), args.Parameter));
         }
 
         private void RedoCommand_OnExecuteRequested(XamlUICommand sender, ExecuteRequestedEventArgs args)

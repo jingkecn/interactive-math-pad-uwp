@@ -126,6 +126,12 @@
   <data name="ClearAllCommand.Label" xml:space="preserve">
     <value>Clear all</value>
   </data>
+  <data name="CopyAsLatexButton.Label" xml:space="preserve">
+    <value>LaTex</value>
+  </data>
+  <data name="CopyAsMathMlButton.Label" xml:space="preserve">
+    <value>Math ML</value>
+  </data>
   <data name="RedoCommand.Label" xml:space="preserve">
     <value>Redo</value>
   </data>

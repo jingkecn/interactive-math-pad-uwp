@@ -32,6 +32,16 @@
                        Visibility="Collapsed" />
             <iink:InteractiveInkCanvas x:Name="InteractiveInkCanvas"
                                        Editor="{x:Bind ViewModel.Editor, Mode=OneWay}" />
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                        Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
+                        Orientation="Horizontal">
+                <TextBlock Foreground="Gray"
+                           Text="All rights reserved. Powered by"
+                           VerticalAlignment="Center" />
+                <Image MaxHeight="36"
+                       Stretch="Uniform"
+                       Source="ms-appx:///Assets/InteractiveInkLogo.svg" />
+            </StackPanel>
         </Grid>
         <!--#region Visual States-->
         <VisualStateManager.VisualStateGroups>
