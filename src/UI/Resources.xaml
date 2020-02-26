@@ -1,0 +1,12 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <ResourceDictionary.MergedDictionaries>
+        <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+        <!-- Primitives -->
+        <ResourceDictionary Source="Styles/Primitives/_Icons.xaml" />
+        <ResourceDictionary Source="Styles/Primitives/_Sizes.xaml" />
+        <ResourceDictionary Source="Styles/Primitives/_Thickness.xaml" />
+        <!-- Other merged dictionaries here -->
+    </ResourceDictionary.MergedDictionaries>
+    <!-- Other app resources here -->
+</ResourceDictionary>

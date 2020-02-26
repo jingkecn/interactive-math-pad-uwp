@@ -1,0 +1,29 @@
+<!--
+~ INTRO:
+~ Directory.Build.targets is imported from Microsoft.Common.targets after importing .targets files from NuGet
+~ packages. So, it can override properties and targets defined in most of the build logic, but sometimes you may need
+~ to customize the project file after the final import.
+~ General GUIDELINES:
+~ - For many properties, it doesn't matter where they're defined, because they're not overwritten and will be read
+~   only at execution time.
+~ - For behavior that might be customized in an individual project, set defaults in .props files.
+~ - Avoid setting dependent properties in .props files by reading the value of a possibly customized property,
+~   because the customization won't happen until MSBuild reads the user's project.
+~ - Set dependent properties in .targets files, because they'll pick up customizations from individual projects.
+~ - If you need to override properties, do it in a .targets file, after all user-project customizations have had a
+~   chance to take effect. Be cautious when using derived properties; derived properties may need to be overridden
+~   as well.
+~ - Include items in .props files (conditioned on a property). All properties are considered before any item, so
+~   user-project property customizations get picked up, and this gives the user's project the opportunity to Remove
+~   or Update any item brought in by the import.
+~ - Define targets in .targets files. However, if the .targets file is imported by an SDK, remember that this
+~   scenario makes overriding the target more difficult because the user's project doesn't have a place to override
+~   it by default.
+~ - If possible, prefer customizing properties at evaluation time over changing properties inside a target. This
+~   guideline makes it easier to load a project and understand what it's doing.
+-->
+<!-- See: https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2017#import-order -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <!-- Import the outer common targets. -->
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.targets', '$(MSBuildThisFileDirectory)../'))" />
+</Project>

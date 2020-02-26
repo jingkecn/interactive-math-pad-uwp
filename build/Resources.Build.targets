@@ -1,0 +1,64 @@
+<!--
+~ Tasks provide the code that runs during the build process. The tasks in the following list are included with MSBuild.
+~ See: https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-task-reference
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ResourceBaseName>myscript-iink-recognition</ResourceBaseName>
+        <ResourceBaseURL>https://s3-us-west-2.amazonaws.com/iink/assets</ResourceBaseURL>
+        <ResourceFileExtension>zip</ResourceFileExtension>
+        <ResourceVersion>1.3.0</ResourceVersion>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ResourceVersionUrl>$(ResourceBaseURL)/$(ResourceVersion)</ResourceVersionUrl>
+        <ResourceTemporaryFolder>$(RootDir)/shared/Resources/_temp</ResourceTemporaryFolder>
+        <ResourceDestinationFolder>$(RootDir)/shared/Resources/Assets</ResourceDestinationFolder>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ResourceDiagram>$(ResourceBaseName)-diagram.$(ResourceFileExtension)</ResourceDiagram>
+        <ResourceMath>$(ResourceBaseName)-math.$(ResourceFileExtension)</ResourceMath>
+        <ResourceRawContent>$(ResourceBaseName)-raw-content.$(ResourceFileExtension)</ResourceRawContent>
+        <ResourceTextEnUs>$(ResourceBaseName)-text-en_US.$(ResourceFileExtension)</ResourceTextEnUs>
+    </PropertyGroup>
+    <Target Name="Download">
+        <!-- See: https://docs.microsoft.com/en-us/visualstudio/msbuild/downloadfile-task -->
+        <DownloadFile DestinationFolder="$(ResourceTemporaryFolder)" SourceUrl="$(ResourceVersionUrl)/$(ResourceDiagram)" />
+        <DownloadFile DestinationFolder="$(ResourceTemporaryFolder)" SourceUrl="$(ResourceVersionUrl)/$(ResourceMath)" />
+        <DownloadFile DestinationFolder="$(ResourceTemporaryFolder)" SourceUrl="$(ResourceVersionUrl)/$(ResourceRawContent)" />
+        <DownloadFile DestinationFolder="$(ResourceTemporaryFolder)" SourceUrl="$(ResourceVersionUrl)/$(ResourceTextEnUs)" />
+    </Target>
+    <Target Name="Unzip" DependsOnTargets="Download">
+        <ItemGroup>
+            <ToUnZipItems Include="$(ResourceTemporaryFolder)/*.zip" />
+        </ItemGroup>
+        <!-- See: https://docs.microsoft.com/en-us/visualstudio/msbuild/unzip-task -->
+        <Unzip ContinueOnError="true" DestinationFolder="$(ResourceTemporaryFolder)" SourceFiles="@(ToUnZipItems)" />
+    </Target>
+    <Target Name="Move" DependsOnTargets="Unzip">
+        <ItemGroup>
+            <ToMoveItems Include="$(ResourceTemporaryFolder)/recognition-assets/**/*.*" />
+        </ItemGroup>
+        <!-- See: https://docs.microsoft.com/en-us/visualstudio/msbuild/move-task -->
+        <Move DestinationFiles="@(ToMoveItems->'$(ResourceDestinationFolder)/%(RecursiveDir)%(Filename)%(Extension)')" SourceFiles="@(ToMoveItems)" />
+    </Target>
+    <Target Name="Delete" DependsOnTargets="Move">
+        <!-- See: https://docs.microsoft.com/en-us/visualstudio/msbuild/removedir-task -->
+        <RemoveDir Directories="$(ResourceTemporaryFolder)" />
+    </Target>
+    <Target Name="BeforeBuild" DependsOnTargets="Delete" />
+    <!-- Import shared configurations & resources. -->
+    <ItemGroup>
+        <!-- [WORKAROUND] Link configuration and resources files to maintain their relative structure. -->
+        <Content Include="$(ResourceDestinationFolder)/conf/diagram.conf" Link="Assets/conf/diagram.conf" />
+        <Content Include="$(ResourceDestinationFolder)/conf/en_US.conf" Link="Assets/conf/en_US.conf" />
+        <Content Include="$(ResourceDestinationFolder)/conf/math.conf" Link="Assets/conf/math.conf" />
+        <Content Include="$(ResourceDestinationFolder)/conf/raw-content.conf" Link="Assets/conf/raw-content.conf" />
+        <Content Include="$(ResourceDestinationFolder)/resources/analyzer/ank-diagram.res" Link="Assets/resources/analyzer/ank-diagram.res" />
+        <Content Include="$(ResourceDestinationFolder)/resources/analyzer/ank-raw-content.res" Link="Assets/resources/analyzer/ank-raw-content.res" />
+        <Content Include="$(ResourceDestinationFolder)/resources/en_US/en_US-ak-cur.res" Link="Assets/resources/en_US/en_US-ak-cur.res" />
+        <Content Include="$(ResourceDestinationFolder)/resources/en_US/en_US-lk-text.res" Link="Assets/resources/en_US/en_US-lk-text.res" />
+        <Content Include="$(ResourceDestinationFolder)/resources/math/math-ak.res" Link="Assets/resources/math/math-ak.res" />
+        <Content Include="$(ResourceDestinationFolder)/resources/math/math-grm-standard.res" Link="Assets/resources/math/math-grm-standard.res" />
+        <Content Include="$(ResourceDestinationFolder)/resources/shape/shk-diagram.res" Link="Assets/resources/shape/shk-diagram.res" />
+    </ItemGroup>
+</Project>

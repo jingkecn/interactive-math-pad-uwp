@@ -1,0 +1,61 @@
+<CommandBar
+    x:Class="MyScript.InteractiveInk.Views.Controls.MainCommandBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="48"
+    d:DesignWidth="320"
+    Background="Transparent"
+    DefaultLabelPosition="Right">
+    <CommandBar.Resources>
+        <StandardUICommand x:Name="ClearAllCommand"
+                           x:Uid="ClearAllCommand"
+                           Kind="Delete"
+                           ExecuteRequested="ClearAllCommand_OnExecuteRequested">
+            <StandardUICommand.IconSource>
+                <SymbolIconSource Symbol="Delete" />
+            </StandardUICommand.IconSource>
+        </StandardUICommand>
+        <StandardUICommand x:Name="RedoCommand"
+                           x:Uid="RedoCommand"
+                           Kind="Redo"
+                           ExecuteRequested="RedoCommand_OnExecuteRequested">
+            <StandardUICommand.IconSource>
+                <SymbolIconSource Symbol="Redo" />
+            </StandardUICommand.IconSource>
+        </StandardUICommand>
+        <StandardUICommand x:Name="UndoCommand"
+                           x:Uid="UndoCommand"
+                           Kind="Undo"
+                           ExecuteRequested="UndoCommand_OnExecuteRequested">
+            <StandardUICommand.IconSource>
+                <SymbolIconSource Symbol="Undo" />
+            </StandardUICommand.IconSource>
+        </StandardUICommand>
+        <XamlUICommand x:Name="TypesetCommand"
+                       x:Uid="TypesetCommand"
+                       ExecuteRequested="TypesetCommand_OnExecuteRequested">
+            <XamlUICommand.IconSource>
+                <FontIconSource Glyph="{StaticResource FontIconLightBulb}" />
+            </XamlUICommand.IconSource>
+        </XamlUICommand>
+    </CommandBar.Resources>
+    <AppBarButton x:Uid="UndoButton"
+                  Command="{x:Bind UndoCommand}"
+                  IsEnabled="{x:Bind ViewModel.CanUndo, Mode=OneWay}" />
+    <AppBarButton x:Uid="RedoButton"
+                  Command="{x:Bind RedoCommand}"
+                  IsEnabled="{x:Bind ViewModel.CanRedo, Mode=OneWay}" />
+    <AppBarButton x:Uid="TypesetButton"
+                  Command="{x:Bind TypesetCommand}" />
+    <CommandBar.SecondaryCommands>
+        <AppBarButton x:Uid="ClearAllButton"
+                      Command="{StaticResource ClearAllCommand}" />
+    </CommandBar.SecondaryCommands>
+    <CommandBar.Content>
+        <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+                   Text="Main" />
+    </CommandBar.Content>
+</CommandBar>

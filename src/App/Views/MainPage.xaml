@@ -1,0 +1,66 @@
+<Page
+    x:Class="MyScript.InteractiveInk.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:MyScript.InteractiveInk.ViewModels"
+    xmlns:winui="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:iink="using:MyScript.InteractiveInk.UI.Xaml.Controls"
+    xmlns:controls="using:MyScript.InteractiveInk.Views.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <viewModels:MainViewModel x:Name="ViewModel" />
+    </Page.Resources>
+    <winui:HeaderedContentControl HorizontalContentAlignment="Stretch"
+                                  VerticalContentAlignment="Stretch">
+        <winui:HeaderedContentControl.Header>
+            <Grid>
+                <controls:MainCommandBar x:Name="TopCommandBar"
+                                         DataContext="{x:Bind ViewModel}"
+                                         Margin="{StaticResource SmallLeftMargin}"
+                                         Visibility="Collapsed" />
+                <InkToolbar HorizontalAlignment="Center"
+                            TargetInkCanvas="{x:Bind InkCanvas}"
+                            VerticalAlignment="Stretch"
+                            Visibility="Collapsed" />
+            </Grid>
+        </winui:HeaderedContentControl.Header>
+        <Grid Background="White">
+            <InkCanvas x:Name="InkCanvas"
+                       Visibility="Collapsed" />
+            <iink:InteractiveInkCanvas x:Name="InteractiveInkCanvas"
+                                       Editor="{x:Bind ViewModel.Editor, Mode=OneWay}" />
+        </Grid>
+        <!--#region Visual States-->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource LargeWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--#region Guidelines (Screen sizes and breakpoints)-->
+                        <!-- See: https://docs.microsoft.com/en-us/windows/uwp/design/layout/screen-sizes-and-breakpoints-for-responsive-design#general-recommendations-->
+                        <!--
+                        ~ (Small) Dock app bars to the bottom of the window for improved reach-ability.
+                        ~ (Medium & Large) Put command elements like app bars at the top of the app window.
+                        -->
+                        <Setter Target="TopCommandBar.Visibility" Value="Visible" />
+                        <Setter Target="BottomCommandBar.Visibility" Value="Collapsed" />
+                        <!--TODO: (Small) Use an icon to represent search (don't show a search box).-->
+                        <!--#endregion-->
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <!--#endregion-->
+    </winui:HeaderedContentControl>
+    <Page.BottomAppBar>
+        <controls:MainCommandBar x:Name="BottomCommandBar"
+                                 DataContext="{x:Bind ViewModel}"
+                                 Margin="{StaticResource SmallLeftMargin}"
+                                 Visibility="Visible" />
+    </Page.BottomAppBar>
+</Page>
