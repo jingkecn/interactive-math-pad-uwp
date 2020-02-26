@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDescription" xml:space="preserve">
-    <value>A starter for MyScript Interactive Ink.</value>
+    <value>Interactive Math Pad.</value>
   </data>
   <data name="AppDisplayName" xml:space="preserve">
-    <value>Interactive Ink Starter</value>
+    <value>Interactive Math Pad</value>
   </data>
   <data name="ClearAllCommand.Label" xml:space="preserve">
     <value>Clear all</value>
